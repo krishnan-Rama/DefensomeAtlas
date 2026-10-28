@@ -1,0 +1,13 @@
+# conda env create -f envs/environment.yml && conda activate defensome
+name: defensome
+channels: [conda-forge, bioconda]
+dependencies:
+  - python=3.11
+  - pandas>=1.5
+  - numpy
+  - scipy          # group tests
+  - matplotlib     # figures
+  - openpyxl       # reading .xlsx metadata
+  - hmmer>=3.3     # required: the gene search
+  - mafft>=7.4     # gene trees and CYP clans
+  - fasttree       # gene trees

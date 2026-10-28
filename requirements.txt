@@ -1,0 +1,7 @@
+# Python packages for defensome.py. HMMER, MAFFT and FastTree are not on PyPI:
+# install them with conda (envs/environment.yml), brew, or `module load`.
+pandas>=1.5
+numpy>=1.22
+matplotlib>=3.5   # figures (optional, recommended)
+scipy>=1.8        # group tests (optional)
+openpyxl>=3.0     # reading .xlsx metadata (optional)

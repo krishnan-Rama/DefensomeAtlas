@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+title: "defensome: comparative chemical defensome annotation from proteomes"
+message: "If you use this software, please cite it and the tools it wraps."
+type: software
+authors:
+  - family-names: Krishnan
+    given-names: Rama
+repository-code: "https://github.com/krishnan-Rama/DEFENSOME"
+license: MIT
+keywords: [comparative genomics, cytochrome P450, detoxification, Lepidoptera, ecotoxicology]
+references:
+  - type: article
+    title: "HMMER: biosequence analysis using profile hidden Markov models"
+    authors: [{family-names: Eddy, given-names: "S. R."}]
+    url: "http://hmmer.org"
+  - type: article
+    title: "Pfam: The protein families database in 2021"
+    authors: [{family-names: Mistry, given-names: "J."}]
+    journal: "Nucleic Acids Research"
+    volume: "49"
+    start: "D412"
+    year: 2021
+  - type: article
+    title: "The chemical defensome: environmental sensing and response genes in the Strongylocentrotus purpuratus genome"
+    authors: [{family-names: Goldstone, given-names: "J. V."}]
+    journal: "Developmental Biology"
+    volume: "300"
+    start: "521"
+    year: 2006

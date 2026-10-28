@@ -1,0 +1,53 @@
+# Defensome Pfam map. One row per gene family.
+# pfam_ids : comma-separated Pfam accessions (no version suffix)
+# rule     : ANY = protein needs >=1 of the listed domains
+#            ALL = protein needs every listed domain (architecture requirement)
+# min_cov  : minimum fraction of the HMM aligned (summed over non-overlapping hits)
+# min_len  : minimum protein length in aa
+# tier     : CORE = well-defined, safe to compare across species
+#            BROAD = huge superfamily, counts are inflated, interpret with care
+# rescue   : yes = also search below Pfam's gathering threshold, for families
+#            whose members can score too low to pass it (very short domains,
+#            divergent taxa). Rescued calls are reported separately and never
+#            merged into counts.tsv; see counts_rescued.tsv.
+# validate : extra checks a RESCUED protein must pass, ';'-separated:
+#            len<=N  len>=N  cys>=F (cysteine fraction)  copies>=N (distinct
+#            non-overlapping hits of the family HMM on the protein)
+category	family	pfam_ids	rule	min_cov	min_len	tier	notes	rescue	validate
+PhaseI	CYP	PF00067	ANY	0.50	350	CORE	cytochrome P450	no	
+PhaseI	CCE	PF00135	ANY	0.50	400	CORE	carboxyl/cholinesterase	no	
+PhaseI	FMO	PF00743	ANY	0.50	350	CORE	flavin monooxygenase	no	
+PhaseI	ALDH	PF00171	ANY	0.60	400	CORE	aldehyde dehydrogenase	no	
+PhaseI	AKR	PF00248	ANY	0.60	280	CORE	aldo-keto reductase	no	
+PhaseI	SDR	PF00106	ANY	0.70	200	BROAD	short-chain dehydrogenase; hundreds per genome	no	
+PhaseI	EH	PF00561	ANY	0.60	250	BROAD	alpha/beta hydrolase; includes lipases and esterases	no	
+PhaseI	Cyt_b5	PF00173	ANY	0.50	80	CORE	CYP electron donor	no	
+PhaseII	GST	PF02798,PF00043	ALL	0.40	180	CORE	cytosolic GST; N+C architecture required	no	
+PhaseII	GST_MAPEG	PF01124	ANY	0.35	100	CORE	loosened in v1.1: MAPEG is a short domain and 0.50 undercounted it	no	
+PhaseII	UGT	PF00201	ANY	0.50	300	CORE	UDP-glycosyltransferase	no	
+PhaseII	SULT	PF00685	ANY	0.50	250	CORE	sulfotransferase	no	
+PhaseIII	ABC_full	PF00005,PF00664	ALL	0.40	400	CORE	full ABC transporter, NBD+TMD	no	
+PhaseIII	ABC_NBD	PF00005	ANY	0.60	200	BROAD	all P-loop NBDs; includes non-transporters	no	
+PhaseIII	MATE	PF01554	ANY	0.50	400	CORE	MATE/SLC47 efflux; two MatE repeats per protein. Present and orthologous to human in fish (Danio, doi:10.1038/srep28937); if a run mixes vertebrates with insects, the vertebrates are a positive control and insect hits should be judged against them	yes	copies>=2
+PhaseIII	MFS	PF07690	ANY	0.70	350	BROAD	major facilitator superfamily	no	
+OxStress	Catalase	PF00199	ANY	0.85	450	CORE	tightened in v1.1: min_cov 0.60 gave a median of 3 per genome; 	no	
+OxStress	SOD_CuZn	PF00080	ANY	0.80	140	CORE	tightened in v1.1: PF00080 also hits the CCS copper chaperone; 	no	
+OxStress	SOD_Fe	PF02777,PF00081	ALL	0.50	180	CORE		no	
+OxStress	Peroxiredoxin	PF00578	ANY	0.60	150	CORE		no	
+OxStress	GPx	PF00255	ANY	0.60	150	CORE	glutathione peroxidase	no	
+Redox	GCL	PF03074	ANY	0.60	550	CORE	glutamate-cysteine ligase; usually single copy	no	
+Redox	Thioredoxin	PF00085	ANY	0.70	90	BROAD		no	
+Redox	Glutaredoxin	PF00462	ANY	0.70	80	BROAD		no	
+Redox	TrxR_GR	PF07992	ANY	0.60	400	BROAD	thioredoxin and glutathione reductases	no	
+Stress	Hsp70	PF00012	ANY	0.60	500	CORE		no	
+Stress	Hsp90	PF00183	ANY	0.60	600	CORE		no	
+Stress	Hsp20	PF00011	ANY	0.50	90	CORE	small heat shock proteins	no	
+Stress	DnaJ	PF00226	ANY	0.70	60	BROAD		no	
+Metal	Metallothionein	PF02067,PF00131	ANY	0.30	25	CORE	PF00131 (Metallothio) covers vertebrate class-I MTs and should be found at GA in fish and amphibians; no Pfam model covers INSECT MTs (InterPro IPR000966, family 5, lists no Pfam member), so for insects the rescue pass, the composition screen and `short-orfs` are the detectors. Confirm both accessions' names in MANIFEST.tsv	yes	len<=120;cys>=0.15
+Metal	Ferritin	PF00210	ANY	0.60	140	CORE		no	
+Metal	CDF_ZnT	PF01545	ANY	0.60	250	CORE	cation efflux	no	
+Metal	ZIP	PF02535	ANY	0.60	250	CORE	zinc/iron import	no	
+Regulation	BTB_BACK_Kelch	PF00651,PF07707,PF01344	ALL	0.30	400	CORE	renamed in v1.1: this architecture is the whole KLHL family (~5-10 per genome), NOT Keap1 alone. Identifying Keap1 needs phylogeny	no	
+Regulation	CncC_bZIP	PF00170	ANY	0.40	300	BROAD	bZIP is not diagnostic on its own	no	
+Regulation	NR_xeno	PF00104,PF00105	ALL	0.40	250	CORE	nuclear receptor LBD+DBD	no	
+Regulation	bHLH_PAS	PF00010,PF00989	ALL	0.40	200	CORE	AhR/ARNT-type sensors	no	

@@ -1,0 +1,11 @@
+# Structure and ligand prediction, kept apart from the main environment
+# because Boltz pins older numpy/scipy. Needs a GPU to be practical.
+#   conda env create -f envs/boltz.yml
+#   then in the GPU job:  export PATH=$CONDA_PREFIX/bin:$PATH   (or the env's bin/)
+name: boltz
+channels: [conda-forge]
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - boltz

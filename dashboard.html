@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Defensome</title>
+<style>
+:root{--bg:#fbfbfc;--panel:#fff;--ink:#1c1f23;--mut:#6b7280;--line:#e3e6ea;
+--acc:#1b4965;--warm:#bc4749;--ok:#2a9d8f;--warn:#e9a13b}
+*{box-sizing:border-box}
+html{scroll-padding-top:66px}
+body{margin:0;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+background:var(--bg);color:var(--ink)}
+header{background:#13263a;color:#fff;padding:0 20px;display:flex;align-items:center;
+gap:22px;flex-wrap:wrap;min-height:54px;position:sticky;top:0;z-index:40}
+header .brand{color:#fff;text-decoration:none;font-weight:650;font-size:16px;letter-spacing:.01em;
+white-space:nowrap}
+header .brand small{font-weight:400;opacity:.65;font-size:12px;margin-left:8px}
+#nav{display:flex;gap:2px;flex-wrap:wrap}
+#nav button{background:none;border:none;color:#c9d6e2;padding:17px 12px 15px;cursor:pointer;
+font-size:13.5px;border-bottom:3px solid transparent;font-family:inherit}
+#nav button:hover{color:#fff}
+#nav button.on{color:#fff;border-bottom-color:#7fc8a9;font-weight:600}
+.search{margin-left:auto;position:relative;flex:0 1 360px;min-width:220px}
+.search input{width:100%;padding:8px 12px;border-radius:6px;border:1px solid #2c4560;
+background:#1d3550;color:#fff;font-size:13px;font-family:inherit}
+.search input::placeholder{color:#93a8bd}
+.search input:focus{outline:none;background:#fff;color:var(--ink);border-color:#fff}
+#qres{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;color:var(--ink);
+border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.15);
+max-height:70vh;overflow:auto;display:none;z-index:50}
+#qres.on{display:block}
+#qres .grp{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);
+padding:8px 12px 3px}
+#qres a{display:flex;justify-content:space-between;gap:10px;padding:6px 12px;color:var(--ink);
+text-decoration:none;font-size:13px}
+#qres a small{color:var(--mut);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#qres a.hl,#qres a:hover{background:#eef4f8}
+#qres .empty{padding:10px 12px;color:var(--mut);font-size:12.5px}
+#subnav{display:none;gap:4px;padding:8px 16px;background:#fff;border-bottom:1px solid var(--line);
+flex-wrap:wrap}
+#subnav.on{display:flex}
+#subnav button{background:none;border:1px solid transparent;border-radius:16px;padding:5px 12px;
+font-size:12.5px;cursor:pointer;color:var(--mut);font-family:inherit}
+#subnav button:hover{color:var(--ink);background:#f4f6f8}
+#subnav button.on{background:#e7f0f6;color:var(--acc);border-color:#cfe0ec;font-weight:600}
+#filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px 16px;
+  background:#f8fafb;border-bottom:1px solid var(--line);font-size:12.5px}
+#filters.off{display:none}
+#filters select{font-size:12.5px;padding:4px 7px;border:1px solid var(--line);
+  border-radius:5px;background:#fff;color:var(--ink);max-width:230px}
+#filters select.active{border-color:var(--acc);font-weight:600;background:#eef4f8}
+#filters .flab{color:#6b7280}
+main{padding:18px 20px 60px;max-width:1700px;margin:0 auto}
+.tab{display:none}.tab.on{display:block}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+padding:16px;margin-bottom:16px}
+/* A panel inside a panel drew a second border one inset in, so nothing lined
+   up down the page. Inner sections are rules, not boxes. */
+.panel .panel{border:none;border-radius:0;background:none;padding:18px 0 0;
+margin:18px 0 0;border-top:1px solid var(--line)}
+.panel .panel:first-child{padding-top:0;margin-top:0;border-top:none}
+/* side-by-side panels are columns, not a stack: no separator rules */
+.grid>.panel{border-top:none;padding-top:0;margin-top:0;margin-bottom:0}
+.panel h2{margin:0 0 4px;font-size:15px}
+.panel .hint{color:var(--mut);font-size:12px;margin:0 0 12px}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
+.ctl{display:flex;flex-direction:column;gap:3px}
+.ctl label{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
+select,input[type=text],input[type=search]{padding:6px 9px;border:1px solid var(--line);
+border-radius:5px;font-size:13px;background:#fff;min-width:150px;font-family:inherit}
+button.act{padding:6px 12px;border:1px solid var(--line);background:#fff;border-radius:5px;
+cursor:pointer;font-size:12.5px}
+button.act:hover{background:#f0f3f6}
+button.act.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{padding:3px 9px;border:1px solid var(--line);border-radius:12px;font-size:11.5px;
+cursor:pointer;background:#fff;user-select:none}
+.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:5px 9px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+th{background:#f6f8fa;position:sticky;top:0;cursor:pointer;font-weight:600;z-index:2}
+th:hover{background:#eef2f6}
+tbody tr:hover{background:#f7fafc}
+.scroll{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:6px}
+.figscroll{overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+.matrix{display:inline-block;max-width:100%;border:1px solid var(--line);
+border-radius:6px;background:#fff;overflow:hidden;vertical-align:top}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(380px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:600;color:var(--acc)}
+.kpi .l{font-size:11.5px;color:var(--mut)}
+.tip{position:absolute;pointer-events:none;background:#1c1f23;color:#fff;padding:6px 9px;
+border-radius:5px;font-size:12px;opacity:0;transition:opacity .08s;z-index:99;max-width:320px}
+.badge{padding:1px 7px;border-radius:9px;font-size:11px;font-weight:600}
+.b-ok{background:#e3f4f1;color:#1d6f64}.b-bad{background:#fbe6e6;color:#9b2c2c}
+.b-warn{background:#fdf1de;color:#8a5a10}
+canvas{display:block;max-width:100%}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;margin-top:8px}
+.legend span{display:flex;align-items:center;gap:5px}
+.sw{width:12px;height:12px;border-radius:2px;display:inline-block}
+.note{font-size:12px;color:var(--mut);background:#f6f8fa;border-left:3px solid var(--acc);
+padding:8px 12px;border-radius:0 5px 5px 0;margin:10px 0}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}
+.sci{font-style:italic}
+details.more{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+details.more>summary{cursor:pointer;color:var(--acc);font-size:12.5px;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:'\25B8  '}
+details.more[open]>summary::before{content:'\25BE  '}
+details.more[open]>summary{margin-bottom:8px}
+/* Columns pack to the left and the last one absorbs the slack, instead of
+   every column stretching and leaving ragged gaps between the values. */
+table th:last-child,table td:last-child{width:100%}
+.grid{margin-bottom:16px}
+a{color:var(--acc)}
+a.lk{color:var(--acc);text-decoration:none}a.lk:hover{text-decoration:underline}
+.crumb{font-size:12.5px;color:var(--mut);margin:2px 0 6px;display:flex;flex-wrap:wrap;gap:4px}
+.crumb a{color:var(--mut);text-decoration:none}.crumb a:hover{color:var(--acc);text-decoration:underline}
+.crumb .sep{opacity:.5}
+.ehead{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px 14px;margin-bottom:16px}
+.ehead h1{font-size:24px;margin:2px 0 2px;font-weight:600}
+.ehead .sub{color:var(--mut);font-size:13.5px}
+.ehead .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;align-items:center}
+.tag{font-size:11.5px;padding:2px 9px;border-radius:10px;background:#f1f4f7;color:#3d4852;border:1px solid var(--line)}
+.ext{font-size:12px;padding:3px 10px;border:1px solid var(--line);border-radius:5px;color:var(--acc);
+text-decoration:none;background:#fff}.ext:hover{background:#eef4f8}
+.jump{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;margin-top:12px;padding-top:10px;
+border-top:1px solid var(--line)}
+.jump a{color:var(--mut);text-decoration:none}.jump a:hover{color:var(--acc)}
+.kpi.link{cursor:pointer}.kpi.link:hover{border-color:#b9cfdf;background:#f7fbfd}
+.pager{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:8px;font-size:12.5px;color:var(--mut)}
+table.dg td.num,table.dg th.num{text-align:right}
+table.dg th:last-child,table.dg td:last-child{width:auto}
+.seq{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.7;
+background:#f8fafb;border:1px solid var(--line);border-radius:6px;padding:12px 14px;overflow:auto;white-space:pre}
+.seq .pos{color:#9aa1a8;user-select:none}
+.empty{color:var(--mut);font-size:13px;padding:6px 0}
+.hero{padding:26px 4px 18px}
+.hero h1{font-size:30px;margin:0;font-weight:650;letter-spacing:-.01em}
+.hero .stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px;font-size:15px;color:var(--mut)}
+.hero .stats a{color:var(--mut);text-decoration:none}.hero .stats a:hover{color:var(--acc)}
+.hero .stats b{color:var(--ink);font-size:20px;font-weight:650;margin-right:3px}
+a.btn{display:inline-block;padding:9px 16px;border-radius:6px;background:var(--acc);color:#fff;
+text-decoration:none;font-size:13.5px;font-weight:500}
+a.btn:hover{filter:brightness(1.12)}
+a.btn.ghost{background:#fff;color:var(--acc);border:1px solid #c9d8e4}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.card{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);
+border-radius:7px;text-decoration:none;color:var(--ink);background:#fff;font-size:13.5px}
+.card:hover{border-color:#b9cfdf;background:#f7fbfd}
+.card .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .n{color:var(--mut);font-size:12.5px}
+.card.more{justify-content:center;color:var(--mut)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:none;background:#fff;padding:6px 12px;font-size:12.5px;cursor:pointer;color:var(--mut);
+font-family:inherit;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:none}
+.seg button.on{background:#e7f0f6;color:var(--acc);font-weight:600}
+p.hint,.panel>.note.explain{display:none}
+body.explain p.hint{display:block}
+#help{background:none;border:1px solid #2c4560;color:#c9d6e2;border-radius:50%;width:26px;height:26px;
+cursor:pointer;font-size:13px;flex:none;font-family:inherit}
+#help.on{background:#7fc8a9;color:#13263a;border-color:#7fc8a9}
+.count{color:var(--mut);font-size:12.5px;margin:0 0 10px}
+td.muted{color:var(--mut)}
+.mol{margin-top:6px}
+.split{display:grid;grid-template-columns:auto minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:1100px){.split{grid-template-columns:1fr}}
+details.sec{background:#fff;border:1px solid var(--line);border-radius:8px;margin-bottom:12px}
+details.sec>summary{cursor:pointer;padding:14px 18px;font-weight:600;font-size:15px;list-style:none}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:'\25B8';float:right;color:var(--mut)}
+details.sec[open]>summary::after{content:'\25BE'}
+details.sec>.in{padding:0 18px 14px}
+details.sec>.in>.panel{border:none;padding:0;margin:0 0 14px}
+</style></head><body>
+<header><a class="brand" href="#/">Defensome<small id="hdr"></small></a>
+<nav id="nav"></nav>
+<div class="search"><input id="q" type="search" autocomplete="off"
+ placeholder="Search species, families, taxa, Pfam…"><div id="qres"></div></div>
+<button id="help" title="show explanations">?</button></header>
+<div id="subnav"></div>
+<div id="filters"></div>
+<main>
+ <section class="tab" id="t-overview"></section>
+ <section class="tab" id="t-species"></section>
+ <section class="tab" id="t-sp"></section>
+ <section class="tab" id="t-gene"></section>
+ <section class="tab" id="t-families"></section>
+ <section class="tab" id="t-family"></section>
+ <section class="tab" id="t-heatmap"></section>
+ <section class="tab" id="t-ordination"></section>
+ <section class="tab" id="t-correlation"></section>
+ <section class="tab" id="t-domains"></section>
+ <section class="tab" id="t-clans"></section>
+ <section class="tab" id="t-amethods"></section>
+ <section class="tab" id="t-trees"></section>
+ <section class="tab" id="t-compare"></section>
+ <section class="tab" id="t-about"></section>
+</main>
+<div class="tip" id="tip"></div>
+<script>
+const D = /*__PAYLOAD__*/null;
+</script>
+<script>
+/*__JS__*/
+</script>
+</body></html>
