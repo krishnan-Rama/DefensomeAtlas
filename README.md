@@ -11,8 +11,6 @@ model, and builds a dashboard where you can search species, compare groups
 (habitat, diet, taxonomy), open any gene to see its sequence and domains, and
 set up a structure prediction with a ligand.
 
-[![CI](https://github.com/krishnan-Rama/DEFENSOME/actions/workflows/ci.yml/badge.svg)](https://github.com/krishnan-Rama/DEFENSOME/actions)
-
 ---
 
 ## Contents
@@ -90,9 +88,6 @@ fails). It also needs a GPU to be practical.
 conda env create -f envs/boltz.yml            # or:
 python3.11 -m venv ~/envs/boltz && ~/envs/boltz/bin/pip install boltz
 ```
-
-You never activate it for `defensome.py`; you only put it on the `PATH` of the
-GPU job that runs a prediction (see [structures](#structures-and-ligand-binding)).
 
 ---
 
